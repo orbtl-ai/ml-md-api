@@ -1,0 +1,11 @@
+tensorflow==2.4.1
+fastapi
+uvicorn
+python-multipart
+aiofiles
+pillow
+matplotlib
+rasterio
+fiona
+geopandas
+exif
