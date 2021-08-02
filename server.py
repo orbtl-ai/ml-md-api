@@ -8,7 +8,7 @@ from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.responses import FileResponse
 from typing import List
 
-from backend.process_images import ingest_image, calc_gsd, resize_to_gsd, chip
+from backend.process_images import ingest_image, calc_gsd, resize_to_gsd, chip, security_check
 from backend.inference import load_model, batch_inference
 from backend.drawing_utils import plot_bboxes
 
@@ -22,6 +22,8 @@ FINAL_ZIP ="/app_data/final_outputs"
 CONFIDENCE_THRESHOLD = 0.2
 FOCAL_LENGTH_MM_HARDCODE=3.7
 TARGET_GSD_CM=2.0
+
+allowed_content_types = ["image/jpeg", "image/png", "image/tiff"]
 
 app = FastAPI()
 model = load_model(PATH_TO_SAVED_ED_MODEL)
@@ -61,7 +63,10 @@ async def object_detection(aerial_images: List[UploadFile] = File(...), flight_A
     '''
 
     print(f"Received {len(aerial_images)} images.")
-    for file in aerial_images:
+    screened_images = security_check(aerial_images, allowed_content_types)
+    print(f"Processing {len(screened_images)} accepted image upload(s).")
+    
+    for file in screened_images:
         base_img_name, base_img_ext = os.path.splitext(file.filename)
 
         img_content = await file.read()

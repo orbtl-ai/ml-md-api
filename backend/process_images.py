@@ -5,7 +5,19 @@ from io import BytesIO
 import numpy as np
 import os
 
-PIL.Image.MAX_IMAGE_PIXELS = 361758720
+def security_check(list_of_file_uploads, list_of_approved_content_types) -> list:
+    '''
+    A simple function designed to screen user uploads to check if they are a supported image type.
+    This function could be modified in the future to also check other things, such as file size.
+    '''
+    screened_uploads = []
+    for fi in list_of_file_uploads:
+      if fi.content_type not in list_of_approved_content_types:
+        print(f"File upload {fi.filename} will not be processed because content is not an approved file type ({list_of_approved_content_types})")
+      else:
+        screened_uploads.append(fi)
+        
+    return screened_uploads
 
 def ingest_image(image_encoded) -> Image.Image:
     '''
