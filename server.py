@@ -1,7 +1,6 @@
 import os
 import shutil
 import json
-from exif import Image as exImage
 
 import uvicorn
 from fastapi import FastAPI, File, UploadFile, Form
@@ -12,22 +11,27 @@ from backend.process_images import ingest_image, calc_gsd, resize_to_gsd, chip, 
 from backend.inference import load_model, batch_inference
 from backend.drawing_utils import plot_bboxes
 
+# MODELS
 LABEL_MAP_PBTXT = "/app/fr_saved_model/dar2015v5_label_map.pbtxt"
 PATH_TO_SAVED_FR_MODEL="/app/fr_saved_model"
 PATH_TO_SAVED_ED_MODEL="/app/ed_saved_model"
+
+# SAVE FILE LOCATIONS
 CHIP_IMAGE_PATH="/app_data/chips"
 FINAL_OUTPUT_PATH="/app_data/final_outputs"
-FINAL_ZIP ="/app_data/final_outputs"
+FINAL_ZIP ="/app_data/final_zips/final_zip"
 
-CONFIDENCE_THRESHOLD = 0.2
-FOCAL_LENGTH_MM_HARDCODE=3.7
+#HARDCODED API PARAMETERS
 TARGET_GSD_CM=2.0
 
-allowed_content_types = ["image/jpeg", "image/png", "image/tiff"]
+ALLOWED_CONTENT_TYPES = ["image/jpeg", "image/png", "image/tiff"]
+
+# lookup table for hardcoded sensor parameters. Order is focal_length_mm, sensor_height_cm, sensor_width_cm
+SENSOR_DICT = {'skydio2':[3.7, 0.462196, 0.6166660],
+                'phantom4pro':[8.8, 0.88, 1.32]}
 
 app = FastAPI()
 model = load_model(PATH_TO_SAVED_ED_MODEL)
-temp_db = []
 
 @app.get('/test-api')
 async def return_success():
@@ -43,17 +47,20 @@ async def return_success():
     return 'The NOAA Machine Learning of Marine Debris API backend server is up and running!'
 
 @app.post('/object-detection/')
-async def object_detection(aerial_images: List[UploadFile] = File(...), flight_AGL: float = Form(...)):
+async def object_detection(aerial_images: List[UploadFile] = File(...), flight_AGL: float = Form(...), 
+                            sensor_platform: str = Form(...), confidence_threshold: float = Form(0.2)):
     '''
-    This function takes a list of aerial imagery and a user-specified flight above ground level (AGL) value to perform
-    object detection with a pretrained object detection model (Faster R-CNN with Inception-ResNet-v2). This routine is not
-    spatially aware. The main output of this method is a zip file containing object detection predictions which can be retrieved at the
-    associated /object-detection-results/ GET endpoint.
+    This function takes a list of aerial imagery, a user-specified flight above ground level (AGL) value, and a user-specified sensor platform to perform
+    object detection with a pretrained object detection model. This routine is not spatially aware. The main output of this method is a zip file containing 
+    object detection predictions which can be retrieved at the associated /object-detection-results/ GET endpoint.
 
     INPUTS: 
       -  aerial_images: a list of non-georeferenced aerial images of coastal zones on which marine debris object detection is to be performed
       -  flight_AGL: a decimal (float) value of the aerial sensor's height above ground level when the imagery was collected. This is neccacary to 
            resample input imagery to the API's desired 2 centimeter ground spacing distance (GSD).
+      - sensor_platform: a string value indicating the platform used for collection. 'skydio2' and 'phantom4pro' are currently supported.
+      - confidence threshold (optional): each prediction from the computer vision model has a confidence score attached. This threshold filters low confidence
+           detections from being shown on the image plots. By default this value is set to 0.2 (20% confidence). Recommended values range from 0.2 to 0.5.
 
     OUTPUTS:
       -  MESSAGE: "Successful Object Detection!"
@@ -63,25 +70,24 @@ async def object_detection(aerial_images: List[UploadFile] = File(...), flight_A
     '''
 
     print(f"Received {len(aerial_images)} images.")
-    screened_images = security_check(aerial_images, allowed_content_types)
+    screened_images = security_check(aerial_images, ALLOWED_CONTENT_TYPES)
     print(f"Processing {len(screened_images)} accepted image upload(s).")
     
     for file in screened_images:
         base_img_name, base_img_ext = os.path.splitext(file.filename)
-
+        
         img_content = await file.read()
-        temp_db.append(img_content)
 
         in_image = ingest_image(img_content)
-        exif_keys = exImage(img_content)
 
-        if exif_keys.focal_length:
-            print(f'Reading focal length value of {exif_keys.focal_length} from EXIF keys.')
-            est_gsd_height, est_gsd_width = calc_gsd(flight_AGL, exif_keys.focal_length, in_image.height, in_image.width)
+        if sensor_platform in SENSOR_DICT.keys():
+          sensor_focal_length, sensor_height, sensor_width = SENSOR_DICT[sensor_platform]
         else:
-            print(f'No focal length value found in EXIF keys. Using hardcoded focal length value of {FOCAL_LENGTH_MM_HARDCODE}.')
-            est_gsd_height, est_gsd_width = calc_gsd(flight_AGL, FOCAL_LENGTH_MM_HARDCODE, in_image.height, in_image.width)
-        
+          sensor_focal_length, sensor_height, sensor_width = SENSOR_DICT['skydio2']
+          print(f"{sensor_platform} is not a supported sensor. Initializing with base with skydio2 parameters.")
+
+        est_gsd_height, est_gsd_width = calc_gsd(flight_AGL, sensor_focal_length, in_image.height, in_image.width, sensor_height, sensor_width)
+
         max_gsd = max(est_gsd_height, est_gsd_width)
         if max_gsd != TARGET_GSD_CM:
             print(f"Resizing images from estimated GSD of {max_gsd} to target GSD of {TARGET_GSD_CM}")
@@ -92,7 +98,7 @@ async def object_detection(aerial_images: List[UploadFile] = File(...), flight_A
         chip_dict = chip(processed_image, base_img_name, base_img_ext, CHIP_IMAGE_PATH)
         
         print("Beginning Inference...")
-        inference_results = batch_inference(chip_dict, model, CONFIDENCE_THRESHOLD)
+        inference_results = batch_inference(chip_dict, model, confidence_threshold)
         
         for k,v in inference_results.items():
             plot_bboxes(k, FINAL_OUTPUT_PATH, os.path.join(CHIP_IMAGE_PATH, k), LABEL_MAP_PBTXT, v, 0.2)
@@ -111,7 +117,7 @@ async def object_detection(aerial_images: List[UploadFile] = File(...), flight_A
       for file in files:
         os.remove(os.path.join(root, file))
 
-    return("Successful Object Detection!")
+    return("Successful Object Detection! Retrieve results at /object-detection-results/ endpoint.")
 
 @app.get('/object-detection-results/')
 async def receive_results():
@@ -122,7 +128,7 @@ async def receive_results():
       -  NONE
 
     OUTPUTS:
-      - Zip file containing API object detection predictions.
+      - Latest written zip file containing API object detection predictions.
     '''
     response = FileResponse(FINAL_ZIP+str('.zip'), media_type='application/octet-stream',filename="api_outputs.zip")
 

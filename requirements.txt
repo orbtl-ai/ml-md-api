@@ -4,5 +4,4 @@ uvicorn
 python-multipart
 aiofiles
 pillow
-exif
 matplotlib
