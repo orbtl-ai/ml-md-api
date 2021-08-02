@@ -38,7 +38,7 @@ def ingest_image(image_encoded) -> Image.Image:
     
     return img
 
-def calc_gsd(flight_agl_meters, sensor_focal_length_mm, image_height, image_width, sensor_height_cm=0.462196, sensor_width_cm=0.6166660) -> Tuple:
+def calc_gsd(flight_agl_meters, sensor_focal_length_mm, image_height, image_width, sensor_height_cm, sensor_width_cm) -> Tuple:
     '''
     A simple function that esitmates the ground spacing distance (GSD) of non-georeferenced aerial photographs. Both the GSD in the Y and X
     dimensions are returned to the user.
@@ -52,8 +52,6 @@ def calc_gsd(flight_agl_meters, sensor_focal_length_mm, image_height, image_widt
     
     - OUTPUTS:
       -  Tuple containing the input image's ground spacing distance (GSD) in both the height and width dimensions.
-
-    NOTE: This function will default to the sensor height/width of the Skydio-2 UAS if these values are not overridden.
     '''
     flight_agl_cm = flight_agl_meters * 1000
     sensor_focal_length_mm = float(sensor_focal_length_mm)
