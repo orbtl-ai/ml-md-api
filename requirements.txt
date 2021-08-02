@@ -4,8 +4,4 @@ uvicorn
 python-multipart
 aiofiles
 pillow
-matplotlib
-rasterio
-fiona
-geopandas
 exif
