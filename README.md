@@ -35,7 +35,7 @@ docker build -t mlmdapi:latest .
 ```
 /app-data/
   /chips/
-	/final-outputs/
+  /final-outputs/
 ```
 ## Run the app
 One built, the mlmdapi:latest app can be run on your local system using a ```docker run``` command with the **-p** option to open up port 5000, which allows communication between the app and your main computer and the **-v** flag to mount the ```/app-data/``` folder we created earlier, which allows the app to write temporary and output files to this location on your computer.
@@ -66,5 +66,5 @@ Since the entire API is built using [FastAPI](https://fastapi.tiangolo.com/) we 
 - ```/images``` - a folder of images displayed in the document you are currently reading!
 - ```server.py``` - the main app. This file contains all the API configuration and contains the main routine (composed of the various /backend utils).
 - ```Dockerfile``` - the app's installation routine
-- ```requirements.txt``` - the app's python dependencies. This is used by Dockerfile during installation.
+- ```requirements.txt``` - the app's Python dependencies. This is used by ```Dockerfile``` during installation.
 
