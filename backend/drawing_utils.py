@@ -64,7 +64,7 @@ def plot_bboxes(output_image_name, output_image_dir, chip_path, label_map_path, 
             scores,
             cat_index,
             use_normalized_coordinates=False,
-            max_boxes_to_draw=50,
+            max_boxes_to_draw=5000,
             min_score_thresh=CONFIDENCE_THRESHOLD,
             agnostic_mode=False,
             line_thickness=1)
