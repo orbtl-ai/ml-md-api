@@ -1,0 +1,79 @@
+item {
+	id: 1
+	name: 'unidentified fragment'
+}
+
+item {
+	id: 2
+	name: 'plastic object'
+}
+
+item {
+	id: 3
+	name: 'buoy'
+}
+
+item {
+	id: 4
+	name: 'foam'
+}
+
+item {
+	id: 5
+	name: 'fishing net'
+}
+
+item {
+	id: 6
+	name: 'line bundle'
+}
+
+item {
+	id: 7
+	name: 'cloth'
+}
+
+item {
+	id: 8
+	name: 'line fragment'
+}
+
+item {
+	id: 9
+	name: 'metal'
+}
+
+item {
+	id: 10
+	name: 'tire donut'
+}
+
+item {
+	id: 11
+	name: 'tire fragment'
+}
+
+item {
+	id: 12
+	name: 'wood board'
+}
+
+item {
+	id: 13
+	name: 'wood pallet'
+}
+
+item {
+	id: 14
+	name: 'wood fragment'
+}
+
+item {
+	id: 15
+	name: 'vessel'
+}
+
+item {
+	id: 16
+	name: 'vessel personal'
+}
