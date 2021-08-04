@@ -55,7 +55,7 @@ Once running, the app's can be accessed at the following REST API endpoints:
 ## In-app documentation and interface
 Since the entire API is built using [FastAPI](https://fastapi.tiangolo.com/) we are automatically presented with beautful documentation and an interace for testing each API endpoint at the ```/docs/``` endpoint.
 
-<INSERT IMAGE HERE>
+![An image showing the API's /docs/ page, which shows additional app info and a testing interface.](https://github.com/orbtl-ai/md-ml-api/blob/main/images/api_docs_v02.png)
 
 ## Repo Table of Contents
 - /backend - a folder which contains all of the app's backend functionality
