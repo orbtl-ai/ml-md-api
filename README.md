@@ -64,7 +64,7 @@ Since the entire API is built using [FastAPI](https://fastapi.tiangolo.com/) we 
   - ```inference.py``` - utilities used for calling Tensorflow models and performing object detection (inference)
   - ```process_images.py``` - utilities used for pre-processing user uploads prior to object detection inference.
 - ```/images``` - a folder of images displayed in the document you are currently reading!
-- ```server.py``` - the main app. This file contains all the API configuration and contains the main routine (composed of the various /backend utils).
+- ```server.py``` - the main app. This file contains all the API configuration and contains the main routine (composed of the various ```/backend``` utils).
 - ```Dockerfile``` - the app's installation routine
 - ```requirements.txt``` - the app's Python dependencies. This is used by ```Dockerfile``` during installation.
 
