@@ -6,7 +6,7 @@ The "automatic detection" of marine debris is performed by deep learning-based o
 
 This entire ML/MD API is "Dockerized", meaning it can be easily downloaded and installed on any personal computer, server, or cloud computing environment. Once the ML/MD API is installed there is no programming or machine learning experience required! The entire project is also open source, meaning it is free to use, share, and modify (forever). 
 
-<IMAGE HERE>
+![An image showing detections of plastic, wood, and other manmade marine debris along a complex shoreline image.](https://github.com/orbtl-ai/md-ml-api/blob/main/images/api_demo_main.png)
 
 ## Key Features
 - State of the art computer vision models for the automatic detection of stranded shoreline marine debris objects (>20cm) from high-resolution aerial images.
@@ -35,7 +35,7 @@ docker build -t mlmdapi:latest .
 ```
 /app-data/
   /chips/
-	/final-outputs/
+  /final-outputs/
 ```
 ## Run the app
 One built, the mlmdapi:latest app can be run on your local system using a ```docker run``` command with the **-p** option to open up port 5000, which allows communication between the app and your main computer and the **-v** flag to mount the ```/app-data/``` folder we created earlier, which allows the app to write temporary and output files to this location on your computer.
@@ -55,16 +55,16 @@ Once running, the app's can be accessed at the following REST API endpoints:
 ## In-app documentation and interface
 Since the entire API is built using [FastAPI](https://fastapi.tiangolo.com/) we are automatically presented with beautful documentation and an interace for testing each API endpoint at the ```/docs/``` endpoint.
 
-<INSERT IMAGE HERE>
+![An image showing the API's /docs/ page, which shows additional app info and a testing interface.](https://github.com/orbtl-ai/md-ml-api/blob/main/images/api_docs_v02.png)
 
 ## Repo Table of Contents
-- /backend - a folder which contains all of the app's backend functionality
-  - api_utils.py - utilities used by the API for security and housekeeping
-  - drawing_utils.py - utilities used for plotting or returning API results to the user
-  - inference.py - utilities used for calling Tensorflow models and performing object detection (inference)
-  - process_images.py - utilities used for pre-processing user uploads prior to object detection inference.
-- /images - a folder of images displayed in the document you are currently reading!
-- server.py - the main app. This file contains all the API configuration and contains the main routine (composed of the various /backend utils).
-- Dockerfile - the app's installation routine
-- requirements.txt - the app's python dependencies. This is used by Dockerfile during installation.
+- ```/backend``` - a folder which contains all of the app's backend functionality
+  - ```api_utils.py``` - utilities used by the API for security and housekeeping
+  - ```drawing_utils.py``` - utilities used for plotting or returning API results to the user
+  - ```inference.py``` - utilities used for calling Tensorflow models and performing object detection (inference)
+  - ```process_images.py``` - utilities used for pre-processing user uploads prior to object detection inference.
+- ```/images``` - a folder of images displayed in the document you are currently reading!
+- ```server.py``` - the main app. This file contains all the API configuration and contains the main routine (composed of the various /backend utils).
+- ```Dockerfile``` - the app's installation routine
+- ```requirements.txt``` - the app's Python dependencies. This is used by ```Dockerfile``` during installation.
 
