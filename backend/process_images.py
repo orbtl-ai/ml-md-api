@@ -1,23 +1,8 @@
 from typing import Tuple
-import PIL
 from PIL import Image
 from io import BytesIO
 import numpy as np
 import os
-
-def security_check(list_of_file_uploads, list_of_approved_content_types) -> list:
-    '''
-    A simple function designed to screen user uploads to check if they are a supported image type.
-    This function could be modified in the future to also check other things, such as file size.
-    '''
-    screened_uploads = []
-    for fi in list_of_file_uploads:
-      if fi.content_type not in list_of_approved_content_types:
-        print(f"File upload {fi.filename} will not be processed because content is not an approved file type ({list_of_approved_content_types})")
-      else:
-        screened_uploads.append(fi)
-        
-    return screened_uploads
 
 def ingest_image(image_encoded) -> Image.Image:
     '''
@@ -61,7 +46,7 @@ def calc_gsd(flight_agl_meters, sensor_focal_length_mm, image_height, image_widt
     
     return (gsd_h, gsd_w)
 
-def resize_to_gsd(input_image, estimated_gsd_cm, target_gsd_cm=2.0) -> Image.Image:
+def resize_to_gsd(input_image, estimated_gsd_cm, temp_output_path, target_gsd_cm=2.0) -> Image.Image:
     '''
     A simple function that computes a scaling factor between the non-georeferenced input image's estimated GSD and the project's target GSD and
     applies the computed scaling factor to the original image. The result is a resampled image with GSD matching this project's target of 2.0cm.
@@ -83,7 +68,8 @@ def resize_to_gsd(input_image, estimated_gsd_cm, target_gsd_cm=2.0) -> Image.Ima
     new_size = (output_width, output_height)
     
     new_im = input_image.resize(new_size)
-
+    
+    new_im.save(temp_output_path)
     return new_im
 
 def chip(im, base_img_name, base_img_ext, chip_dir, desired_height=512, desired_width=512) -> dict:
@@ -122,3 +108,29 @@ def chip(im, base_img_name, base_img_ext, chip_dir, desired_height=512, desired_
     print(f"Num of inference images: {len(chip_dict)}")
 
     return chip_dict
+
+def reassemble_chips(inference_results_dict) -> dict:
+  merged_results_dict = {}
+  new_bboxes = []
+  new_scores = []
+  new_classes = []
+  for k, v in inference_results_dict.items():
+    chip_name, chip_ext = os.path.splitext(k)
+    base_name = '_'.join(chip_name.split('_')[:-2])
+    x_offset = int(chip_name.split('_')[-1])
+    y_offset = int(chip_name.split('_')[-2])
+
+    for bbox in v['bboxes']:
+      new_bbox = (y_offset + bbox[0], x_offset + bbox[1], y_offset + bbox[2], x_offset + bbox[3])
+      new_bboxes.append(new_bbox)
+    for score in v['scores']:
+      new_scores.append(score)
+    for classes in v['classes']:
+      new_classes.append(classes)
+    
+  merged_results_dict[base_name+chip_ext] = {'bboxes':new_bboxes, 'scores':new_scores, 'classes':new_classes}
+ 
+  return merged_results_dict
+
+
+    
