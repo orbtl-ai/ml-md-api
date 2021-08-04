@@ -58,13 +58,13 @@ Since the entire API is built using [FastAPI](https://fastapi.tiangolo.com/) we 
 ![An image showing the API's /docs/ page, which shows additional app info and a testing interface.](https://github.com/orbtl-ai/md-ml-api/blob/main/images/api_docs_v02.png)
 
 ## Repo Table of Contents
-- /backend - a folder which contains all of the app's backend functionality
-  - api_utils.py - utilities used by the API for security and housekeeping
-  - drawing_utils.py - utilities used for plotting or returning API results to the user
-  - inference.py - utilities used for calling Tensorflow models and performing object detection (inference)
-  - process_images.py - utilities used for pre-processing user uploads prior to object detection inference.
-- /images - a folder of images displayed in the document you are currently reading!
-- server.py - the main app. This file contains all the API configuration and contains the main routine (composed of the various /backend utils).
-- Dockerfile - the app's installation routine
-- requirements.txt - the app's python dependencies. This is used by Dockerfile during installation.
+- ```/backend``` - a folder which contains all of the app's backend functionality
+  - ```api_utils.py``` - utilities used by the API for security and housekeeping
+  - ```drawing_utils.py``` - utilities used for plotting or returning API results to the user
+  - ```inference.py``` - utilities used for calling Tensorflow models and performing object detection (inference)
+  - ```process_images.py``` - utilities used for pre-processing user uploads prior to object detection inference.
+- ```/images``` - a folder of images displayed in the document you are currently reading!
+- ```server.py``` - the main app. This file contains all the API configuration and contains the main routine (composed of the various /backend utils).
+- ```Dockerfile``` - the app's installation routine
+- ```requirements.txt``` - the app's python dependencies. This is used by Dockerfile during installation.
 
