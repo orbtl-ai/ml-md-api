@@ -2,9 +2,9 @@
 FROM tensorflow/tensorflow:2.4.1-gpu
 
 # Metadata
-LABEL maintainer="winansw@hawaii.edu"
-LABEL version="0.1"
-LABEL description="This is a custom Docker image to install the NOAA Machine Learning of Marine Debris API."
+LABEL maintainer="ross@orbtl.ai"
+LABEL version="0.2"
+LABEL description="This is a custom Docker image to install the Machine Learning of Marine Debris API (ML/MD API)."
 
 # Ensure the OS doesn't attempt to prompt the user during installation of dependencies
 ARG DEBIAN_FRONTEND=noninteractive
