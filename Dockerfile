@@ -45,6 +45,7 @@ RUN pip3 install -r requirements.txt
 COPY . /app
 
 # Add new user to avoid running as root
+# NOTE: COMMENT OUT THE FOLLOWING TWO LINES IF YOU ARE DOING A LOCAL INSTALL ON DOCKER FOR WINDOWS (WSL2) to avoid file permission issues.
 RUN useradd -ms /bin/bash tensorflow
 USER tensorflow
 #WORKDIR /home/tensorflow
