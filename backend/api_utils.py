@@ -1,5 +1,15 @@
 import os
 
+def create_temp_folders(CHIP_IMAGE_PATH, FINAL_OUTPUT_PATH) -> None:
+    '''
+    A simple function to create the folder structure we need for intermediate image processing.
+    '''
+    if not os.path.exists(CHIP_IMAGE_PATH):
+      os.makedirs(CHIP_IMAGE_PATH)
+
+    if not os.path.exists(FINAL_OUTPUT_PATH):
+      os.makedirs(FINAL_OUTPUT_PATH)
+
 def clean_temporary_files(CHIP_IMAGE_PATH, FINAL_OUTPUT_PATH) -> None:
     '''
     A simple function to clean the API's temporary file storage locations. This is run both before and after each API run to 

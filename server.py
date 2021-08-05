@@ -7,15 +7,15 @@ from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.responses import FileResponse
 from typing import List
 
-from backend.api_utils import security_check, clean_temporary_files
+from backend.api_utils import create_temp_folders, security_check, clean_temporary_files
 from backend.process_images import ingest_image, calc_gsd, reassemble_chips, resize_to_gsd, chip
 from backend.inference import load_model, batch_inference
 from backend.drawing_utils import plot_bboxes
 
 # MODELS
-LABEL_MAP_PBTXT = "/app/fr_saved_model/dar2015v5_label_map.pbtxt"
-PATH_TO_SAVED_FR_MODEL="/app/fr_saved_model"
-PATH_TO_SAVED_ED_MODEL="/app/ed_saved_model"
+LABEL_MAP_PBTXT = "/app/models/fasterrcnn_saved_model/dar2015v5_label_map.pbtxt"
+PATH_TO_SAVED_FR_MODEL="/app/models/fasterrcnn_saved_model"
+PATH_TO_SAVED_ED_MODEL="/app/models/efficientdet_saved_model"
 
 # SAVE FILE LOCATIONS
 CHIP_IMAGE_PATH="/app_data/chips"
@@ -53,6 +53,8 @@ app = FastAPI(
     },
 )
 
+create_temp_folders(CHIP_IMAGE_PATH, FINAL_OUTPUT_PATH)
+
 model = load_model(PATH_TO_SAVED_ED_MODEL)
 
 @app.post('/object-detection/')
@@ -81,7 +83,7 @@ async def object_detection(aerial_images: List[UploadFile] = File(...), flight_A
 
     print(f"Received {len(aerial_images)} images.")
     screened_images = security_check(aerial_images, ALLOWED_CONTENT_TYPES)
-    print(f"Processing {len(screened_images)} accepted image upload(s).")
+    print(f"Accepted {len(screened_images)} images.")
     
     for file in screened_images:
         base_img_name, base_img_ext = os.path.splitext(file.filename)
