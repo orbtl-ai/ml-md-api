@@ -1,6 +1,6 @@
 # Machine Learning of Marine Debris API (ML/MD API)
 ## Overview
-The Machine Learning of Marine Debris (ML/MD) is a project to automatically detect stranded marine debris objects along coastlines from high resolution aerial photos. Typically, these photographs would be taken from an Uncrewed Aerial System (UAS) or crewed aircraft, allowing rapid standing-stock surveys of marine debris at the local-to-regional scale.
+The Machine Learning of Marine Debris (ML/MD) project seeks to automatically detect shoreline stranded marine debris objects from high resolution aerial photos. Typically, these photos are taken from an Uncrewed Aerial System (UAS) or crewed aircraft, allowing a single operator to perform rapid standing-stock surveys of marine debris at the local-to-regional scale.
 
 The "automatic detection" of marine debris is performed by deep learning-based object detection models specifically trained for the detection of marine debris. These deep learning models are trained using the [Tensorflow Object Detection API](https://github.com/tensorflow/models/blob/master/research/object_detection/README.md).
 
@@ -64,7 +64,7 @@ Since the entire API is built using [FastAPI](https://fastapi.tiangolo.com/) we 
   - ```inference.py``` - utilities used for calling Tensorflow models and performing object detection (inference)
   - ```process_images.py``` - utilities used for pre-processing user uploads prior to object detection inference.
 - ```/images``` - a folder of images displayed in the document you are currently reading!
-- ```server.py``` - the main app. This file contains all the API configuration and contains the main routine (composed of the various /backend utils).
+- ```server.py``` - the main app. This file contains all the API configuration and contains the main routine (composed of the various ```/backend``` utils).
 - ```Dockerfile``` - the app's installation routine
 - ```requirements.txt``` - the app's Python dependencies. This is used by ```Dockerfile``` during installation.
 
