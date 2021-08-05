@@ -9,12 +9,16 @@ This entire ML/MD API is "Dockerized", meaning it can be easily downloaded and i
 ![An image showing detections of plastic, wood, and other manmade marine debris along a complex shoreline image.](https://github.com/orbtl-ai/md-ml-api/blob/main/images/api_demo_main.png)
 
 ## Key Features
-- State of the art computer vision models for the automatic detection of stranded shoreline marine debris objects (>20cm) from high-resolution aerial images.
-- An Application Programming Interface (API), which allows non-technical users to simply upload imagery and basic flight parameters to receive actionable information about the presence and abundance of marine debris along shorelines.
+ - State of the art computer vision models for the automatic detection of stranded shoreline marine debris objects (>20cm) from high-resolution aerial images.
+ - An Application Programming Interface (API), which allows non-technical users to simply upload imagery and basic flight parameters to receive actionable information about the presence and abundance of marine debris along shorelines.
+
 ## Data
 Data is not stored in this repo, however there is a labeled data set of approximately 6,000 marine debris objects in 2 centimeter aerial photographs. This data was used to train and evaluate the computer vision models in Tensorflow. This data is available upon request with plans underway to serve the data openly in the future.
 ## Models
-This repo is not designed to host a library of state-of-the-art computer vision models for marine debris. This repo does contain several Tensorflow saved_model.pb files, which are complete Tensorflow programs separated from the original code that built them. A second repo will eventually be stood up to store models associated with this project.
+This repo is not designed to host or distribute pre-trained computer vision models for marine debris. However, this repo does contain a ```/models/``` folder with several [Tensorflow saved_model folders](https://www.tensorflow.org/guide/saved_model).
+
+**WARNING: Models provides as-is. No warranty as to accuracy expressed or implied.**
+
 #### faster-rcnn
 A Faster R-CNN object detector with an Inception-ResNet-v2 feature classifier. This is currently the best performing combination, however it is a computationally expensive model which takes a long time to run on CPU.
 #### EfficientDet-d0
@@ -22,27 +26,32 @@ An EfficientDet-d0 object detection model which utilizes a Feature Pyramid Netwo
 ## Contact
 This repo and all associated data, code, models, and documentation was assembled by [ORBTL.AI](ross@orbtl.ai) under funding from NOAA NCCOS and Oregon State University.
 # ML/MD API User Guide
-## Install the app
-This application is installed using [Docker](https://www.docker.com/). Docker allows us to package the entire ML/MD API into a "container" that can be installed in a single command line. Installations will, by default, use the computer's GPU if available. Otherwise all computation will be performed on CPU.
+## Install the app (Windows, Mac, and Linux)
+This application is installed using [Docker](https://www.docker.com/). Docker allows us to package the entire ML/MD API into an app "image" that can be installed in a single command line. The container can then be run with one more command. Installations will use the computer's GPU (if available). Otherwise all computation will be performed on CPU.
 
-1. Install Docker for your system
-2. Clone or copy this repo to your system
-3. From the directory, run a ```docker build``` command to buildthe ML/MD API app. We are going to name the app "mdmlapi:latest". 
+1. [Install Docker for your system](https://docs.docker.com/engine/install/)
+2. Download this repo to your system (green "Code" button in the top right corner) OR [install git for your system](https://git-scm.com/) and clone this repo with the following command:
+```
+git clone https://github.com/orbtl-ai/md-ml-api.git
+```
+3. From the repo directory, run a [docker build](https://docs.docker.com/engine/reference/commandline/build/) command to build the ML/MD API app:
 ```
 docker build -t mlmdapi:latest .
 ```
-4. Create the following folder structure somewhere on your computer. It doesn't matter where on your computer you make it (just remember where it is, you will need it to run the app)
-```
-/app-data/
-  /chips/
-  /final-outputs/
-```
+> - The **-t** flag allows us to name and tag our app. In this example we are naming the app "mlmdapi" and tagging it as the "latest" version.
+> - Note the '.' at the end of the command, which specifies we are building the ```Dockerfile``` located in the current working directory.
+
+4. Create a folder anywhere on your computer named ```/app-data```. We will mount this folder to the app at runtime so it can store intermediate and output files.
+
 ## Run the app
-One built, the mlmdapi:latest app can be run on your local system using a ```docker run``` command with the **-p** option to open up port 5000, which allows communication between the app and your main computer and the **-v** flag to mount the ```/app-data/``` folder we created earlier, which allows the app to write temporary and output files to this location on your computer.
+One built, the mlmdapi:latest app can be run on your local system using a [docker run](https://docs.docker.com/engine/reference/commandline/run/) command:
 ```
 docker run -v /path/to/app_data/:/app_data -p 5000:5000 mdmlapi:latest
 ```
-> **NOTE:** If your system has a Graphics Processing Unit (GPU) then Tensorflow can take advantage of this for speedier computing. Just add the -```-gpus all``` flag to the ```docker run``` command.
+> - The **-v** flag mounts the ```/path/to/app-data/``` folder you created above to the ```/app-data``` folder in the docker container.<br>
+> - The **-p** flag opens port 5000 between your computer and the app (which is running in something called a Docker container). Port 5000 is needed so the app can communicate with your computer to receive user inputs and provide the resulting outputs.<br>
+
+> **NOTE:** If your system has a Graphics Processing Unit (GPU) then Tensorflow can take advantage of this for speedier computing. Just add the ```--gpus all``` flag to the docker run command.
 
 If the ML/MD API was installed on a local computer using the port numbers above then the app is most likely accessed by visiting ```localhost:5000/docs/``` in your web browser (or any of the other API endpoints detailed below).
 
