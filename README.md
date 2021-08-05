@@ -26,7 +26,7 @@ An EfficientDet-d0 object detection model which utilizes a Feature Pyramid Netwo
 ## Contact
 This repo and all associated data, code, models, and documentation was assembled by [ORBTL.AI](ross@orbtl.ai) under funding from NOAA NCCOS and Oregon State University.
 # ML/MD API User Guide
-## Install the app (Windows, Mac, and Linux)
+## Install the app (Tested on Windows and Linux. Not tested on Mac.)
 This application is installed using [Docker](https://www.docker.com/). Docker allows us to package the entire ML/MD API into an app "image" that can be installed in a single command line. The container can then be run with one more command. Installations will use the computer's GPU (if available). Otherwise all computation will be performed on CPU.
 
 1. [Install Docker for your system](https://docs.docker.com/engine/install/)
@@ -42,6 +42,8 @@ docker build -t mlmdapi:latest .
 > - Note the '.' at the end of the command, which specifies we are building the ```Dockerfile``` located in the current working directory.
 
 4. Create a folder anywhere on your computer named ```/app-data```. We will mount this folder to the app at runtime so it can store intermediate and output files.
+
+5. **LOCAL WINDOWS INSTALL ONLY** In order to avoid file permissions on Windows 10 the user needs to comment out lines 49 and 50 in the ```Dockerfile``` by adding a ```#``` symbol at the start of each line.
 
 ## Run the app
 One built, the mlmdapi:latest app can be run on your local system using a [docker run](https://docs.docker.com/engine/reference/commandline/run/) command:
