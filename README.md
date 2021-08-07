@@ -48,7 +48,7 @@ docker build -t mlmdapi:latest .
 ## Run the app
 One built, the mlmdapi:latest app can be run on your local system using a [docker run](https://docs.docker.com/engine/reference/commandline/run/) command:
 ```
-docker run -v /path/to/app_data/:/app_data -p 5000:5000 mdmlapi:latest
+docker run -v /path/to/app-data/:/app-data -p 5000:5000 mlmdapi:latest
 ```
 > - The **-v** flag mounts the ```/path/to/app-data/``` folder you created above to the ```/app-data``` folder in the docker container.<br>
 > - The **-p** flag opens port 5000 between your computer and the app (which is running in something called a Docker container). Port 5000 is needed so the app can communicate with your computer to receive user inputs and provide the resulting outputs.<br>
