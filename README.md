@@ -24,7 +24,7 @@ A Faster R-CNN object detector with an Inception-ResNet-v2 feature classifier. T
 #### EfficientDet-d0
 An EfficientDet-d0 object detection model which utilizes a Feature Pyramid Network (FPN) with an EfficientNet feature classifier. This is a well performing combination which balances accuracy with speed of detection. Runs very quickly on CPU.
 ## Contact
-This repo and all associated data, code, models, and documentation was assembled by [ORBTL.AI](ross@orbtl.ai) under funding from NOAA NCCOS and Oregon State University.
+This repo and all associated data, code, models, and documentation are assembled by [ORBTL.AI](ross@orbtl.ai) under funding from NOAA NCCOS and Oregon State University.
 # ML/MD API User Guide
 ## Install the app (Tested on Windows and Linux. Not tested on Mac.)
 This application is installed using [Docker](https://www.docker.com/). Docker allows us to package the entire ML/MD API into an app "image" that can be installed in a single command line. The container can then be run with one more command. Installations will use the computer's GPU (if available). Otherwise all computation will be performed on CPU.
