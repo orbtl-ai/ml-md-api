@@ -27,41 +27,26 @@ An EfficientDet-d0 object detection model which utilizes a Feature Pyramid Netwo
 This repo and all associated data, code, models, and documentation are assembled by [ORBTL.AI](ross@orbtl.ai) under funding from NOAA NCCOS and Oregon State University.
 # ML/MD API User Guide
 ## Install the app (Tested on Windows and Linux. Not tested on Mac.)
-This application is installed using [Docker](https://www.docker.com/). Docker allows us to package the entire ML/MD API into an app "image" that can be installed in a single command line. The container can then be run with one more command. Installations will use the computer's GPU (if available). Otherwise all computation will be performed on CPU.
+This application is installed using [Docker](https://www.docker.com/). Docker allows us to "compose" the entire ML/MD API codebase into an app that can be installed in a single command line. 
 
-1. [Install Docker for your system](https://docs.docker.com/engine/install/)
+1. First [install Docker for your system](https://docs.docker.com/engine/install/)
 2. Download this repo to your system (green "Code" button in the top right corner) OR [install git for your system](https://git-scm.com/) and clone this repo with the following command:
 ```
 git clone https://github.com/orbtl-ai/md-ml-api.git
 ```
-3. From the repo directory, run a [docker build](https://docs.docker.com/engine/reference/commandline/build/) command to build the ML/MD API app:
+3. From the repo directory, run a [docker compose](https://docs.docker.com/compose/) command to build and run the ML/MD API app:
 ```
-docker build -t mlmdapi:latest .
+docker compose up
 ```
-> - The **-t** flag allows us to name and tag our app. In this example we are naming the app "mlmdapi" and tagging it as the "latest" version.
-> - Note the '.' at the end of the command, which specifies we are building the ```Dockerfile``` located in the current working directory.
+> **NOTE:** If your system has a Graphics Processing Unit (GPU) this information needs to be passed to the app during the docker compose step. To do this, open the ```docker-compose.yml``` file and remove the leading '#' symbol on lines 8-13 to make those lines active.
 
-4. Create a folder anywhere on your computer named ```/app-data```. We will mount this folder to the app at runtime so it can store intermediate and output files.
-
-5. **LOCAL WINDOWS INSTALL ONLY** In order to avoid file permissions on Windows 10 the user needs to comment out lines 49 and 50 in the ```Dockerfile``` by adding a ```#``` symbol at the start of each line.
-
-## Run the app
-One built, the mlmdapi:latest app can be run on your local system using a [docker run](https://docs.docker.com/engine/reference/commandline/run/) command:
-```
-docker run -v /path/to/app-data/:/app-data -p 5000:5000 mlmdapi:latest
-```
-> - The **-v** flag mounts the ```/path/to/app-data/``` folder you created above to the ```/app-data``` folder in the docker container.<br>
-> - The **-p** flag opens port 5000 between your computer and the app (which is running in something called a Docker container). Port 5000 is needed so the app can communicate with your computer to receive user inputs and provide the resulting outputs.<br>
-
-> **NOTE:** If your system has a Graphics Processing Unit (GPU) then Tensorflow can take advantage of this for speedier computing. Just add the ```--gpus all``` flag to the docker run command.
-
+## Access the app
 If the ML/MD API was installed on a local computer using the port numbers above then the app is most likely accessed by visiting ```localhost:5000/docs/``` in your web browser (or any of the other API endpoints detailed below).
 
-## Use the app
-Once running, the app's can be accessed at the following REST API endpoints:
-- ```/test-api/``` a POST endpoint that returns an excited, positive affirmation that the ML/MD API app is up and running (if it is, in fact, up and running).
+## App Endpoints:
 - ```/object-detection/``` a POST endpoint that allows users to upload multiple image files, the type of UAS system, the height above ground level (AGL) the images were taken at.
 - ```/object-detection-results/``` A GET endpoint that allows the user to retrieve the latest batch of results from the ML/MD API.
+- ```/test-api/``` a POST endpoint that returns an excited, positive affirmation that the ML/MD API app is up and running (if it is, in fact, up and running).
 
 ## In-app documentation and interface
 Since the entire API is built using [FastAPI](https://fastapi.tiangolo.com/) we are automatically presented with beautful documentation and an interace for testing each API endpoint at the ```/docs/``` endpoint.
@@ -76,6 +61,7 @@ Since the entire API is built using [FastAPI](https://fastapi.tiangolo.com/) we 
   - ```process_images.py``` - utilities used for pre-processing user uploads prior to object detection inference.
 - ```/images``` - a folder of images displayed in the document you are currently reading!
 - ```server.py``` - the main app. This file contains all the API configuration and contains the main routine (composed of the various ```/backend``` utils).
-- ```Dockerfile``` - the app's installation routine
+- ```docker-compose.yml```- the app's installation and configuration routine
+- ```Dockerfile``` - the app's build routine
 - ```requirements.txt``` - the app's Python dependencies. This is used by ```Dockerfile``` during installation.
 

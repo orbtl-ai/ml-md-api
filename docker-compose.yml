@@ -1,0 +1,17 @@
+version: '3'
+services:
+  mlmdapi:
+    build: .
+    volumes:
+      - app-data:/app-data
+# UNCOMMENT LINES BELOW TO PASS GPU TO APP
+#    deploy:
+#      resources:
+#        reservations:
+#          devices:
+#            - driver: nvidia
+#              capabilities: [gpu]
+    ports:
+      - '5000:5000'
+volumes:
+  app-data:
