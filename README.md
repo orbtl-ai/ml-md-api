@@ -45,7 +45,7 @@ Tested on Windows and Linux. Not tested on Mac, but assumed to work.
 This application is installed using [Docker](https://www.docker.com/). **Docker allows us to install the entire app in three easy steps.** These steps will work on a personal laptop, a high-powered cloud computing cluster, and anywhere in between!
 
 1. First [install Docker for your system](https://docs.docker.com/engine/install/).
-2. Download this repo to your system (green "Code" button in the top right corner) OR [install git for your system](https://git-scm.com/) and clone this repo with the following command:
+2. Next, [Download and unzip the code in this repo to your system](https://github.com/orbtl-ai/md-ml-api/archive/refs/heads/main.zip) OR [install git for your system](https://git-scm.com/) and clone this repo with the following command:
 
 ```
 git clone https://github.com/orbtl-ai/md-ml-api.git
