@@ -39,7 +39,8 @@ This repo and all associated data, code, models, and documentation are assembled
 
 # ML/MD API User Guide
 
-## Install the app (Tested on Windows and Linux. Not tested on Mac.)
+## Install the app 
+Tested on Windows and Linux. Not tested on Mac, but assumed to work.
 
 This application is installed using [Docker](https://www.docker.com/). **Docker allows us to install the entire app in three easy steps.** These steps will work on a personal laptop, a high-powered cloud computing cluster, and anywhere in between!
 
@@ -50,13 +51,13 @@ This application is installed using [Docker](https://www.docker.com/). **Docker 
 git clone https://github.com/orbtl-ai/md-ml-api.git
 ```
 
-3. From the repo directory, run a [docker compose](https://docs.docker.com/compose/) command to build, configure, and run the ML/MD API backend server:
+3. **NOTE: Optional Step for GPU-accelerated hardware:** If your system has a Graphics Processing Unit (GPU) this information needs to be passed to the app before running the final installation step below. To pass your GPU information, open the ```docker-compose.yml``` file and remove the leading '#' symbol on lines 8-13 to make those lines active.
+
+From the repo directory, run a [docker compose](https://docs.docker.com/compose/) command to build, configure, and run the ML/MD API backend server:
 
 ```
 docker-compose up
 ```
-
-> **NOTE:** If your system has a Graphics Processing Unit (GPU) this information needs to be passed to the app during the docker compose step. To do this, open the ```docker-compose.yml``` file and remove the leading '#' symbol on lines 8-13 to make those lines active.
 
 ## Access the app
 
@@ -70,7 +71,7 @@ If the ML/MD API was installed on a local computer using the port numbers above 
 
 ## In-app documentation and interface
 
-Since the entire API is built using [FastAPI](https://fastapi.tiangolo.com/) we are automatically presented with beautful documentation and an interace for testing each API endpoint at the ```/docs/``` endpoint.
+Since the entire API is built using [FastAPI](https://fastapi.tiangolo.com/) we are automatically presented with beautful documentation and an interface for testing each API endpoint at the ```/docs/``` endpoint.
 
 ![An image showing the API's /docs/ page, which shows additional app info and a testing interface.](https://github.com/orbtl-ai/md-ml-api/blob/main/images/api_docs_v02.png)
 
