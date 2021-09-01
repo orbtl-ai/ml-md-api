@@ -19,15 +19,11 @@ This entire ML/MD API is "Dockerized", meaning it can be easily downloaded and i
 
 Data is not stored in this repo, however there is a labeled data set of approximately 6,000 marine debris objects in 2 centimeter aerial photographs. This data was used to train and evaluate the computer vision models in Tensorflow. This data is available upon request with plans underway to serve the data openly in the future.
 
-## Models
+## Current Models
 
-This repo is not designed to host or distribute pre-trained computer vision models for marine debris. However, this repo does contain a ```/models/``` folder with several [Tensorflow saved_model folders](https://www.tensorflow.org/guide/saved_model).
+This repo is not designed to host or distribute pre-trained computer vision models for marine debris. However, this repo does contain a ```/models/``` folder with at least one [Tensorflow saved_model folders](https://www.tensorflow.org/guide/saved_model).
 
 **WARNING: Models provides as-is. No warranty as to accuracy expressed or implied.**
-
-#### faster-rcnn
-
-A Faster R-CNN object detector with an Inception-ResNet-v2 feature classifier. This is currently the best performing combination, however it is a computationally expensive model which takes a long time to run on CPU. It is only recommended to use this model if your hardware has a NVIDIA GPU.
 
 #### EfficientDet-d0
 
@@ -42,27 +38,28 @@ This repo and all associated data, code, models, and documentation are assembled
 ## Install the app 
 Tested on Windows and Linux. Not tested on Mac, but assumed to work.
 
-This application is installed using [Docker](https://www.docker.com/). **Docker allows us to install the entire app in three easy steps.** These steps will work on a personal laptop, a high-powered cloud computing cluster, and anywhere in between!
+This application is downloaded using [git](https://git-scm.com/) and installed using [Docker](https://www.docker.com/). **Docker allows us to install the entire app on any computer hardware and/or operating system in just a few easy steps.** These steps should work on a personal laptop, a high-powered cloud computing cluster, and anywhere in between!
 
-1. First [install Docker for your system](https://docs.docker.com/engine/install/).
-2. Next, download this code repo by [installing git for your system](https://git-scm.com/), [installing git lfs for your system](https://git-lfs.github.com/), and downloading this repo and the Tensorflow models with the following commands:
+1. First [install Docker for your system](https://docs.docker.com/engine/install/) and [install git for your system](https://git-scm.com/).
+2. Next, download this code repo to your computer by running the following git command line:
 
 ```
 git clone https://github.com/orbtl-ai/md-ml-api.git
-git lfs fetch origin main
 ```
 
-3. **NOTE: Optional Step for GPU-accelerated hardware:** If your system has a Graphics Processing Unit (GPU) this information needs to be passed to the app before running the final installation step below. To pass your GPU information, open the ```docker-compose.yml``` file and remove the leading '#' symbol on lines 8-13 to make those lines active.
+3. **NOTE: Optional Step for NVIDIA GPU-accelerated hardware:** If your system has a NVIDIA-based Graphics Processing Unit (GPU) this information needs to be passed to the app before running the final installation step below. To pass your GPU information, open the ```docker-compose.yml``` file and remove the leading '#' symbol on lines 8-13 to "activate" those lines and pass your GPU's information to the app.
 
-From the repo directory, run a [docker compose](https://docs.docker.com/compose/) command to build, configure, and run the ML/MD API backend server:
+4. From the repo directory, run a [docker compose](https://docs.docker.com/compose/) command to build, configure, and run the ML/MD API backend server:
 
 ```
 docker-compose up
 ```
 
+You should see a message along the lines of "Successfully built..." if everything went well!
+
 ## Access the app
 
-If the ML/MD API was installed on a local computer using the port numbers above then the app is most likely accessed by visiting ```localhost:5000/docs/``` in your web browser (or any of the other API endpoints detailed below).
+If the ML/MD API was installed on a local computer using the port numbers above then the app is most likely accessed by visiting ```localhost:5000/``` in your web browser (or any of the other API endpoints detailed below).
 
 ## App Endpoints
 
@@ -70,7 +67,7 @@ If the ML/MD API was installed on a local computer using the port numbers above 
 - ```/object-detection-results/``` A GET endpoint that allows the user to retrieve the latest batch of results from the ML/MD API.
 - ```/test-api/``` a POST endpoint that returns an excited, positive affirmation that the ML/MD API app is up and running (if it is, in fact, up and running).
 
-## In-app documentation and interface
+## In-app documentation and testing interface
 
 Since the entire API is built using [FastAPI](https://fastapi.tiangolo.com/) we are automatically presented with beautful documentation and an interface for testing each API endpoint at the ```/docs/``` endpoint.
 
