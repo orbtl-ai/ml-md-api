@@ -1,4 +1,4 @@
 backend/__pycache__/
 *.pyc
 *.code-workspace
-devcontainer.json
+.devcontainer/
