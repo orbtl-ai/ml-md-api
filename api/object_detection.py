@@ -7,7 +7,7 @@ import fastapi
 from fastapi import Depends, File, UploadFile
 from fastapi.responses import FileResponse
 
-from api.data_models.user_submission import User_Submission
+from data_models.user_submission import User_Submission
 
 from PIL import Image
 
@@ -30,8 +30,8 @@ FINAL_OUTPUT_PATH="/app_data/final_outputs"
 FINAL_ZIP ="/app_data/api_outputs"
 
 # MODELS
-LABEL_MAP_PBTXT = "/app/models/fasterrcnn_saved_model/dar2015v5_label_map.pbtxt"
-PATH_TO_SAVED_MODEL="/app/models/efficientdet_saved_model"
+LABEL_MAP_PBTXT = "/app/models/efficientdet-d0/md_labelmap_v6_20210810.pbtxt"
+PATH_TO_SAVED_MODEL="/app/models/efficientdet-d0/saved_model"
 model = load_model(PATH_TO_SAVED_MODEL)
 
 # lookup table for hardcoded sensor parameters. Order is focal_length_mm, sensor_height_cm, sensor_width_cm
