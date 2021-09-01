@@ -1,4 +1,8 @@
 import os
+from fastapi import FastAPI
+
+
+api = FastAPI()
 
 def create_temp_folders(CHIP_IMAGE_PATH, FINAL_OUTPUT_PATH) -> None:
     '''
@@ -36,3 +40,4 @@ def security_check(list_of_file_uploads, list_of_approved_content_types) -> list
         screened_uploads.append(fi)
         
     return screened_uploads
+

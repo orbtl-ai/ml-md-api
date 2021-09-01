@@ -1,6 +1,7 @@
 tensorflow==2.4.1
 fastapi
 uvicorn
+jinja2
 python-multipart
 aiofiles
 pillow
