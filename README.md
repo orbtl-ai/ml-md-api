@@ -8,7 +8,7 @@ The "automatic detection" of marine debris is performed by deep learning-based o
 
 This entire ML/MD API is "Dockerized", meaning it can be easily downloaded and installed on any personal computer, server, or cloud computing environment. Once the ML/MD API is installed there is no programming or machine learning experience required! The entire project is also open source, meaning it is free to use, share, and modify (forever).
 
-![An image showing detections of plastic, wood, and other manmade marine debris along a complex shoreline image.](https://github.com/orbtl-ai/md-ml-api/blob/main/images/api_demo_main.png)
+![An image showing detections of plastic, wood, and other manmade marine debris along a complex shoreline image.](https://github.com/orbtl-ai/md-ml-api/blob/main/static/api_demo_main.png)
 
 ## Key Features
 
@@ -74,7 +74,7 @@ If the ML/MD API was installed on a local computer using the port numbers above 
 
 Since the entire API is built using [FastAPI](https://fastapi.tiangolo.com/) we are automatically presented with beautful documentation and an interface for testing each API endpoint at the ```/docs/``` endpoint.
 
-![An image showing the API's /docs/ page, which shows additional app info and a testing interface.](https://github.com/orbtl-ai/md-ml-api/blob/main/images/api_docs_v02.png)
+![An image showing the API's /docs/ page, which shows additional app info and a testing interface.](https://github.com/orbtl-ai/md-ml-api/blob/main/static/api_docs_v02.png)
 
 ## Repo Table of Contents
 
