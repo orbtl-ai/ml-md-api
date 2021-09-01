@@ -1,0 +1,51 @@
+{% extends "shared/layout.html" %}
+
+{% block content %}
+
+    <img src="/static/img/cloud.png" style="float: left; max-width: 48px; margin-right: 20px;" alt="">
+
+    <h1><span class="font-semi-bold">The Machine Learning of Marine Debris API</span></h1>
+
+    <div style="clear:both;"></div>
+    <br>
+    <p class="lead">
+        This is an online demo of the Machine Learning of Marine Debris system hosted by ORBTL AI.<br>
+        <br>
+        <strong>Object Detection Submission</strong>
+
+
+        <form action="/object-detection/" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <strong> STEP 1: Upload Photos</strong> 
+                <br>
+                <input type="file" name="aerial_images" id="aerial_images" multiple> 
+                <br><br>
+                <strong>STEP 2: Specify Auto-resampling options</strong> 
+                <br>
+                <input class="form-check-input" type="checkbox" name='skip_optional_resampling' id="flexCheckChecked"> My data is already 2cm resolution (check to skip auto-resampling).
+                <br> <br>
+                <strong>Auto-Resampling Parameters (Optional if above box is checked):</strong>
+                <br>
+                <ul> 
+                    <li>Flight Altitude Above Ground Level (meters): <input type="number" name="flight_AGL" value="76.0"/> </li>
+                    <li>Sensor Platform:
+                    <select id="sensor_platform" name="sensor_platform">
+                        {% for choice in choices %}
+                        <option value={{choice}}>{{choice}}</option>
+                        {% endfor %}
+                    </select>
+                    </li>
+                </ul>
+                <br>
+                <strong> Object Detection Parameters (Optional):</strong>
+                <ul> 
+                    <li>Confidence Threshold (0.0 to 1.0): <input type="number" name="confidence_threshold" value="0.3" min="0.0" max="1.0" step="0.1"> </li>
+                </ul>
+                <br>
+                </div>
+            <input type="submit">
+        </form>
+    </p>
+    </div>
+
+{% endblock %}

@@ -17,7 +17,6 @@ def category_index(label_map_path) -> dict:
     
     INPUTS:
       -  label_map_path: the path to a Tensorflow .pbtxt label map file.
-
     OUTPUTS:
       -  category_index: a python dictionary containing a map between class integers and class names 
     '''
@@ -34,7 +33,6 @@ def plot_bboxes(output_image_name, output_image_dir, chip_path, label_map_path, 
     '''
     A function that wraps the TFODAPI viz_utils. This can be used to translate our python dictionary of detections into
     a an image chip plot with the model's predictions drawn as bounding boxes with class name and prediction confidence.
-
     INPUTS:
       -  output_image_name: the desired file name of the output image.
       -  output_image_dir: the desired location of the output image
@@ -71,3 +69,4 @@ def plot_bboxes(output_image_name, output_image_dir, chip_path, label_map_path, 
     
     output_image_dir = os.path.join(output_image_dir, output_image_name)
     cv2.imwrite(output_image_dir, image_copy)
+
