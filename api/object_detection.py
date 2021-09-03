@@ -9,8 +9,6 @@ from fastapi.responses import FileResponse
 
 from data_models.user_submission import User_Submission
 
-from PIL import Image
-
 from api.api_utils.drawing_utils import plot_bboxes
 from api.api_utils.inference_utils import batch_inference, load_model
 from api.api_utils.preprocessing_utils import (calc_gsd, chip,
@@ -22,7 +20,7 @@ from api.api_utils.server_utils import clean_temporary_files, security_check
 
 #HARDCODED API PARAMETERS
 TARGET_GSD_CM=2.0
-ALLOWED_CONTENT_TYPES = ["image/jpeg", "image/png", "image/tiff"]
+ALLOWED_CONTENT_TYPES = ["image/jpeg", "image/png", "image/tiff", "image/jp2"]
 
 # SAVE FILE LOCATIONS
 CHIP_IMAGE_PATH="/app_data/chips"
@@ -72,7 +70,8 @@ async def object_detection(aerial_images: List[UploadFile] = File(...), sub: Use
     
     for file in screened_images:
         base_img_name, base_img_ext = os.path.splitext(file.filename)
-        chip_base_img_path = os.path.join(CHIP_IMAGE_PATH, file.filename)
+        chip_base_img_path = os.path.join(CHIP_IMAGE_PATH, base_img_name + ".jpg")
+        print(chip_base_img_path)
 
         img_content = await file.read()
 
@@ -99,16 +98,20 @@ async def object_detection(aerial_images: List[UploadFile] = File(...), sub: Use
         
         print("Beginning Inference...")
         inference_results = batch_inference(chip_dict, model, sub.confidence_threshold)
+        print("Inference complete...")
 
+        print("Plotting...")
         reassembled_results = reassemble_chips(inference_results)
         
         for k, v in reassembled_results.items():
           plot_bboxes(k, FINAL_OUTPUT_PATH, chip_base_img_path, LABEL_MAP_PBTXT, v, sub.confidence_threshold)
 
+        print("Dumping JSON")
         results_path = os.path.join(FINAL_OUTPUT_PATH, f'{base_img_name}_inference_results.json')
         with open(results_path, 'w') as outfile:
             json.dump(reassembled_results, outfile, indent=0)
-      
+
+        print("Plotting complete...")
     shutil.make_archive(FINAL_ZIP, 'zip', FINAL_OUTPUT_PATH)
     clean_temporary_files(CHIP_IMAGE_PATH, FINAL_OUTPUT_PATH)
     return("Successful Object Detection! Retrieve results at /object-detection-results/ endpoint.")

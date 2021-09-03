@@ -4,6 +4,8 @@ from io import BytesIO
 import numpy as np
 import os
 
+Image.MAX_IMAGE_PIXELS =  999999999
+
 def ingest_image(image_encoded) -> Image.Image:
     '''
     A simple function that opens a ByteEncoded image (received via POST request), opens as a PIL Image.Image, converts

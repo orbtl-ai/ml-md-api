@@ -54,9 +54,9 @@ def plot_bboxes(output_image_name, output_image_dir, chip_path, label_map_path, 
     scores = detection_dict['scores']
 
     image = np.array(cv2.imread(chip_path))
-    image_copy = image.copy()
+    #image_copy = image.copy()
     viz_utils.visualize_boxes_and_labels_on_image_array(
-            image_copy,
+            image,
             bboxes,
             classes,
             scores,
@@ -68,5 +68,5 @@ def plot_bboxes(output_image_name, output_image_dir, chip_path, label_map_path, 
             line_thickness=1)
     
     output_image_dir = os.path.join(output_image_dir, output_image_name)
-    cv2.imwrite(output_image_dir, image_copy)
+    cv2.imwrite(output_image_dir, image)
 
