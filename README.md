@@ -12,8 +12,8 @@ This entire ML/MD API is "Dockerized", meaning it can be easily downloaded and i
 
 ## Key Features
 
-- State of the art computer vision models for the automatic detection of stranded shoreline marine debris objects (>20cm) from high-resolution aerial images.
-- An Application Programming Interface (API), which allows non-technical users to simply upload imagery and basic flight parameters to receive actionable information about the presence and abundance of marine debris along shorelines.
+1. State of the art computer vision models for the automatic detection of stranded shoreline marine debris objects (>20cm) from high-resolution aerial images.
+2. A RESTful Application Programming Interface (API), which allows technical users to simply upload imagery and basic flight parameters to receive actionable information about the presence and abundance of marine debris along shorelines.
 
 ## Data
 
@@ -36,52 +36,46 @@ This repo and all associated data, code, models, and documentation are assembled
 # ML/MD API User Guide
 
 ## Install the app 
+
 Tested on Windows and Linux. Not tested on Mac, but assumed to work.
 
 This application is downloaded using [git](https://git-scm.com/) and installed using [Docker](https://www.docker.com/). **Docker allows us to install the entire app on any computer hardware and/or operating system in just a few easy steps.** These steps should work on a personal laptop, a high-powered cloud computing cluster, and anywhere in between!
 
-1. First [install Docker for your system](https://docs.docker.com/engine/install/) and [install git for your system](https://git-scm.com/).
-2. Next, download this code repo to your computer by running the following git command line:
+### 1. First [install Docker for your system](https://docs.docker.com/engine/install/) and [install git for your system](https://git-scm.com/)
 
-```
-git clone https://github.com/orbtl-ai/md-ml-api.git
-```
+### 2. Next, download this code repo to your computer by running the following git command line
 
-3. **NOTE: Optional Step for NVIDIA GPU-accelerated hardware:** If your system has a NVIDIA-based Graphics Processing Unit (GPU) this information needs to be passed to the app before running the final installation step below. To pass your GPU information, open the ```docker-compose.yml``` file and remove the leading '#' symbol on lines 8-13 to "activate" those lines and pass your GPU's information to the app.
+  ```bash
+  git clone https://github.com/orbtl-ai/md-ml-api.git
+  ```
 
-4. From the repo directory, run a [docker compose](https://docs.docker.com/compose/) command to build, configure, and run the ML/MD API backend server:
+### 3. **NOTE: Optional Step for NVIDIA GPU-accelerated hardware:** If your system has a NVIDIA-based Graphics Processing Unit (GPU) this information needs to be passed to the app before running the final installation step below. To pass your GPU information, open the ```docker-compose.yml``` file and remove the leading '#' symbol on lines 8-13 to "activate" those lines and pass your GPU's information to the app
 
-```
-docker-compose up
-```
+### 4. From the repo directory, run a [docker compose](https://docs.docker.com/compose/) command to build, configure, and run the ML/MD API backend server
+
+  ```bash
+  docker-compose up
+  ```
 
 You should see a message along the lines of "Successfully built..." if everything went well!
 
-## Access the app
+## Access the app's frontend webpage and upload data
 
-If the ML/MD API was installed on a local computer using the port numbers above then the app is most likely accessed by visiting ```localhost:5000/``` in your web browser (or any of the other API endpoints detailed below).
+If the ML/MD API was installed on a local computer using the port numbers above then the app is most likely accessed by visiting ```localhost:5000/``` in your web browser. If the app is up and running you should see an image similar to below:
 
-## App Endpoints
+![An image showing the API's frontend homepage (/), which has fields for uploading aerial images and flight information to the API.](https://github.com/orbtl-ai/md-ml-api/blob/main/static/api-frontend-beta-v0.3.png)
 
-- ```/object-detection/``` a POST endpoint that allows users to upload multiple image files, the type of UAS system, the height above ground level (AGL) the images were taken at.
-- ```/object-detection-results/``` A GET endpoint that allows the user to retrieve the latest batch of results from the ML/MD API.
-- ```/test-api/``` a POST endpoint that returns an excited, positive affirmation that the ML/MD API app is up and running (if it is, in fact, up and running).
+Once you submit a job, just wait until the API returns the message "Object Detection Successful!". Note that it may take awhile. Final results will be delivered at the /object-detection-results/ endpoint. This is most likely at ```localhost:5000/object-detection-results/``` if you are following along with this install guide. 
 
-## In-app documentation and testing interface
+## Access the app's backend testing interface and documentation
 
-Since the entire API is built using [FastAPI](https://fastapi.tiangolo.com/) we are automatically presented with beautful documentation and an interface for testing each API endpoint at the ```/docs/``` endpoint.
+Since the entire API is built using [FastAPI](https://fastapi.tiangolo.com/) we are automatically presented with beautful documentation and an interface for testing each API endpoint at the ```/docs/``` endpoint. This is most likely at ```localhost:5000/docs``` if you are following along with this install guide.
 
 ![An image showing the API's /docs/ page, which shows additional app info and a testing interface.](https://github.com/orbtl-ai/md-ml-api/blob/main/static/api_docs_v02.png)
 
-## Repo Table of Contents
+## App Endpoints
 
-- ```/backend``` - a folder which contains all of the app's backend functionality
-  - ```api_utils.py``` - utilities used by the API for security and housekeeping
-  - ```drawing_utils.py``` - utilities used for plotting or returning API results to the user
-  - ```inference.py``` - utilities used for calling Tensorflow models and performing object detection (inference)
-  - ```process_images.py``` - utilities used for pre-processing user uploads prior to object detection inference
-- ```/images``` - a folder of images displayed in the document you are currently reading!
-- ```server.py``` - the main app. This file contains all the API configuration and contains the main routine (composed of the various ```/backend``` utils)
-- ```docker-compose.yml```- the app's installation and configuration routine
-- ```Dockerfile``` - the app's build routine
-- ```requirements.txt``` - the app's Python dependencies. This is used by ```Dockerfile``` during installation
+- ```/``` The frontend webpage for uploading aerial imagery to the API.
+- ```/object-detection/``` a POST endpoint that allows users to upload multiple image files, the type of UAS system, the height above ground level (AGL) the images were taken at.
+- ```/object-detection-results/``` A GET endpoint that allows the user to retrieve the latest batch of results from the ML/MD API.
+- ```/test-api/``` a POST endpoint that returns an excited, positive affirmation that the ML/MD API app is up and running (if it is, in fact, up and running).
