@@ -45,18 +45,19 @@ async def object_detection(aerial_images: List[UploadFile] = File(...), sub: Use
     '''
     This endpoint will accept non-georeferenced, 2 centimeter aerial imagery typically taken from airplane or Unmanned Aerial Systems (UAS).\n
     
-    Optional image resampling to 2 centimeter resolution can be performed automatically by specifying values for the 
-    optional flight above ground level and sensor platform values.\n
+    Optional image resampling to 2 centimeter resolution can be performed if desired. This requires the user to submit additional flight parameters.\n
     
     The resulting zip file from this operation can be retrieved at the associated /object-detection-results/ GET endpoint.
 
     INPUTS: 
       -  aerial_images: a list of non-georeferenced aerial images of coastal zones on which marine debris object detection is to be performed
-      -  flight_AGL (optional): a decimal (float) value of the aerial sensor's height above ground level when the imagery was collected. This is neccacary to 
-           resample input imagery to the API's desired 2 centimeter ground spacing distance (GSD).
-      - sensor_platform (optional): a string value indicating the platform used for collection. 'skydio2' and 'phantom4pro' are currently supported.
+      -  skip_optional_resampling: a boolean (true/false) value that specifies whether to skip optional resampling.
+      -  flight_AGL: a decimal (float) value of the aerial sensor's height above ground level when the imagery was collected. This is neccacary to 
+           resample input imagery to the API's desired 2 centimeter ground spacing distance (GSD). This value is optional when skip_optional_resampling=True.
+      - sensor_platform (optional): a string value indicating the platform used for collection. 'skydio2' and 'phantom4pro' are currently supported. 
+           This value is optional when skip_optional_resampling=True.
       - confidence threshold (optional): each prediction from the computer vision model has a confidence score attached. This threshold filters low confidence
-           detections from being shown on the image plots. By default this value is set to 0.2 (20% confidence). Recommended values range from 0.2 to 0.5.
+           detections from being shown on the image plots. By default this value is set to 0.3 (30% confidence). Recommended values range from 0.2 to 0.5.
 
     OUTPUTS:
       -  MESSAGE: "Successful Object Detection!"

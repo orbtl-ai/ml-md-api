@@ -3,7 +3,7 @@ FROM tensorflow/tensorflow:2.4.1-gpu
 
 # Metadata
 LABEL maintainer="ross@orbtl.ai"
-LABEL version="0.2"
+LABEL version="0.3"
 LABEL description="This is a custom Docker image to install the Machine Learning of Marine Debris API (ML/MD API)."
 
 # Ensure the OS doesn't attempt to prompt the user during installation of dependencies
